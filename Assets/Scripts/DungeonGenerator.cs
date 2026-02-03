@@ -45,6 +45,7 @@ namespace TinyDungeon
             {
                 MetroidvaniaLayer();
             }
+            AdjustCamera();
         }
 
         private void ClearData()
@@ -169,6 +170,49 @@ namespace TinyDungeon
             }
         }
 
+        private void AdjustCamera()
+        {
+            if (rooms.Count == 0) return;
+
+            // 1. Calculate the bounds of the dungeon
+            float minX = float.MaxValue;
+            float maxX = float.MinValue;
+            float minY = float.MaxValue;
+            float maxY = float.MinValue;
+
+            foreach (var pos in rooms.Keys)
+            {
+                if (pos.x < minX) minX = pos.x;
+                if (pos.x > maxX) maxX = pos.x;
+                if (pos.y < minY) minY = pos.y;
+                if (pos.y > maxY) maxY = pos.y;
+            }
+
+            // 2. Find the center point
+            // (We multiply by 2 because your visual logic uses * 2 for spacing)
+            float centerX = (minX + maxX) / 2f;
+            float centerY = (minY + maxY) / 2f;
+            
+            // 3. Move the Main Camera to the center
+            // (Preserve Z = -10 so it doesn't clip through the world)
+            if (Camera.main != null)
+            {
+                Camera.main.transform.position = new Vector3(centerX, centerY, -10);
+
+                // 4. Zoom out to fit everything
+                // Calculate required height and width (plus some padding of 2 units)
+                float height = (maxY - minY) + 4f; 
+                float width = (maxX - minX) + 4f;
+
+                // Determine needed size based on screen aspect ratio
+                float targetHeight = height / 2f;
+                float targetWidth = (width / Camera.main.aspect) / 2f;
+
+                // Set size to whichever is larger (to ensure nothing is cut off)
+                Camera.main.orthographicSize = Mathf.Max(targetHeight, targetWidth, 5f);
+            }
+        }
+
         // draws the map
         private void OnDrawGizmos()
         {
@@ -205,4 +249,5 @@ namespace TinyDungeon
             }
         }
     }
+    
 }

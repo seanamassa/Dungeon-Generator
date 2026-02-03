@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; // Use TextMeshPro for cleaner text
 using TinyDungeon;
 
 public class DungeonUI : MonoBehaviour
@@ -7,31 +8,40 @@ public class DungeonUI : MonoBehaviour
     [Header("References")]
     public DungeonGenerator generator;
     
-    [Header("UI Elements")]
+    [Header("Controls")]
     public Button generateButton;
     public Slider roomSlider;
     public Slider branchingSlider;
     public Toggle metroidvaniaToggle;
-    public Text statusText; 
+
+    [Header("Value Labels (Drag Text objects here)")]
+    public TextMeshProUGUI roomValueText;  
+    public TextMeshProUGUI branchingValueText; 
 
     void Start()
     {
-        roomSlider.value = generator.maxRooms;
-        branchingSlider.value = generator.branchingFactor;
-        metroidvaniaToggle.isOn = generator.useMetroidvaniaLogic;
+        if (generator != null)
+        {
+            roomSlider.value = generator.maxRooms;
+            branchingSlider.value = generator.branchingFactor;
+            metroidvaniaToggle.isOn = generator.useMetroidvaniaLogic;
+        }
+
         generateButton.onClick.AddListener(OnGenerateClicked);
         roomSlider.onValueChanged.AddListener(OnSettingsChanged);
         branchingSlider.onValueChanged.AddListener(OnSettingsChanged);
         metroidvaniaToggle.onValueChanged.AddListener(OnToggleChanged);
 
-        UpdateStatusLabel();
+        UpdateLabels();
     }
-    
+
     void OnSettingsChanged(float value)
     {
+        // Update Generator values
         generator.maxRooms = Mathf.RoundToInt(roomSlider.value);
         generator.branchingFactor = branchingSlider.value;
-        UpdateStatusLabel();
+        
+        UpdateLabels();
     }
 
     void OnToggleChanged(bool value)
@@ -42,15 +52,14 @@ public class DungeonUI : MonoBehaviour
     void OnGenerateClicked()
     {
         generator.GenerateDungeon();
-        UpdateStatusLabel();
     }
 
-    void UpdateStatusLabel()
+    void UpdateLabels()
     {
-        if (statusText != null)
-        {
-            statusText.text = $"Rooms: {generator.maxRooms} | Branch: {generator.branchingFactor:F2}";
-        }
+        if (roomValueText != null) 
+            roomValueText.text = generator.maxRooms.ToString();
+        
+        if (branchingValueText != null) 
+            branchingValueText.text = generator.branchingFactor.ToString("F2");
     }
 }
-
