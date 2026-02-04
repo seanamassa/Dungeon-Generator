@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Use TextMeshPro for cleaner text
+using TMPro; 
 using TinyDungeon;
 
 public class DungeonUI : MonoBehaviour
@@ -14,7 +14,7 @@ public class DungeonUI : MonoBehaviour
     public Slider branchingSlider;
     public Toggle metroidvaniaToggle;
 
-    [Header("Value Labels (Drag Text objects here)")]
+    [Header("Value Labels")]
     public TextMeshProUGUI roomValueText;  
     public TextMeshProUGUI branchingValueText; 
 
@@ -37,7 +37,6 @@ public class DungeonUI : MonoBehaviour
 
     void OnSettingsChanged(float value)
     {
-        // Update Generator values
         generator.maxRooms = Mathf.RoundToInt(roomSlider.value);
         generator.branchingFactor = branchingSlider.value;
         
