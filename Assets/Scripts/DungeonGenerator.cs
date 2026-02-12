@@ -1,6 +1,6 @@
 /* CMPM 147 Project: Metroidvania Dungeon Generator 
 * Programmed by: Sean Massa 1/22/2026 Updated 2/10/2026
-* Description: A procedural dungeon layout generator that produces grid based room graphs. The generator has adjustable parameters for number of rooms, branching factor, and loot room * count. The system generates spatial layouts and includes two distinct logic modes:
+* Description: A procedural dungeon layout generator that produces grid based room graphs. The generator has adjustable parameters for number of rooms, branching factor, and loots. The system generates spatial layouts and includes two distinct logic modes:
 * 1. Standard Mode: Creates linear or branching optimized for flow.
 * 2. Metroidvania Mode: Post-processes the graph to lock the Boss Room 
 * and hide a Key in a distant dead-end, forcing non-linear exploration and backtracking.
@@ -10,6 +10,7 @@
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
+using System.IO;
 
 namespace TinyDungeon
 { 
@@ -267,6 +268,29 @@ namespace TinyDungeon
             
             Camera.main.transform.position = new Vector3((minX + maxX)/2, (minY + maxY)/2, -10);
             Camera.main.orthographicSize = Mathf.Max(height / 2f, (width / Camera.main.aspect) / 2f);
+        }
+        public void SaveDungeonImage()
+        {
+            // get the path to the Project Root (one level up from Assets)
+            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+            
+            // combine it to make a path for your new folder
+            string folderPath = Path.Combine(projectRoot, "DungeonScreenshots");
+
+            // create the folder if it doesn't exist yet
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // 4. Generate the filename with a timestamp
+            string filename = "Dungeon_" + System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png";
+            string fullPath = Path.Combine(folderPath, filename);
+            
+            // 5. Save the screenshot
+            ScreenCapture.CaptureScreenshot(fullPath);
+            
+            Debug.Log("Saved Screenshot to: " + fullPath);
         }
     }
 }

@@ -14,6 +14,7 @@ public class DungeonUI : MonoBehaviour
     public Slider branchingSlider;
     public Slider lootSlider;
     public Toggle metroidvaniaToggle;
+    public UnityEngine.UI.Button saveImageButton;
 
     [Header("Value Labels")]
     public TextMeshProUGUI roomValueText;  
@@ -35,8 +36,10 @@ public class DungeonUI : MonoBehaviour
         branchingSlider.onValueChanged.AddListener(OnSettingsChanged);
         lootSlider.onValueChanged.AddListener(OnSettingsChanged);
         metroidvaniaToggle.onValueChanged.AddListener(OnToggleChanged);
+        if(saveImageButton != null) saveImageButton.onClick.AddListener(generator.SaveDungeonImage);
 
         UpdateLabels();
+
     }
 
     void OnSettingsChanged(float value)
