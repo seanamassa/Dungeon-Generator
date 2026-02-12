@@ -16,10 +16,9 @@ A procedural level design tool built in Unity that generates grid-based dungeon 
 ##  Getting Started
 
 1.  **Clone the Repository:**
-     Use GitHub Desktop for ease of use.
+    Use GitHub Desktop for ease of use.
     Clone using this link:
-    ``` (https://github.com/seanamassa/Dungeon-Generator.git)
-    ```
+    (https://github.com/seanamassa/Dungeon-Generator.git)
 3.  **Open in Unity:**
     * Launch Unity Hub and add the project folder.
     * Recommended Version: **Unity 6** (or 2022.3+).
