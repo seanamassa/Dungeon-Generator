@@ -16,8 +16,8 @@ A procedural level design tool built in Unity that generates grid-based dungeon 
 ##  Getting Started
 
 1.  **Clone the Repository:**
-    ```bash
-    git clone [https://github.com/yourusername/metroidvania-dungeon-generator.git](https://github.com/yourusername/metroidvania-dungeon-generator.git)
+    ``` Use GitHub Desktop for ease of use.
+    Clone using this link: (https://github.com/seanamassa/Dungeon-Generator.git)
     ```
 2.  **Open in Unity:**
     * Launch Unity Hub and add the project folder.
