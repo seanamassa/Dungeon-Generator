@@ -1,7 +1,6 @@
 /* CMPM 147 Project: Metroidvania Dungeon Generator 
-* Programmed by: Sean Massa 1/22/2026
-* Description: A procedural dungeon layout generator that produces grid based room graphs. 
-* The system generates spatial layouts and includes two distinct logic modes:
+* Programmed by: Sean Massa 1/22/2026 Updated 2/10/2026
+* Description: A procedural dungeon layout generator that produces grid based room graphs. The generator has adjustable parameters for number of rooms, branching factor, and loot room * count. The system generates spatial layouts and includes two distinct logic modes:
 * 1. Standard Mode: Creates linear or branching optimized for flow.
 * 2. Metroidvania Mode: Post-processes the graph to lock the Boss Room 
 * and hide a Key in a distant dead-end, forcing non-linear exploration and backtracking.
@@ -14,13 +13,14 @@ using UnityEngine;
 
 namespace TinyDungeon
 { 
-    public enum RoomType { None, Start, Normal, Boss, Key, Treasure }
+    public enum RoomType { None, Start, Normal, Boss, Key, Loot }
 
     public class DungeonGenerator : MonoBehaviour
     {
         [Header("Settings")]
         [Range(5, 50)] public int maxRooms = 15;
         [Range(0f, 1f)] public float branchingFactor = 0.5f;
+        [Range(0, 15)] public int lootRoomCount = 2;
         public bool useMetroidvaniaLogic = true;
 
         [Header("Visuals")]
@@ -111,7 +111,7 @@ namespace TinyDungeon
 
         private void MetroidvaniaLayer()
         {
-            // Find the edge connected to the Boss Room and lock it
+            // find the edge connected to the Boss Room and lock it
             var bossEdgeIndex = corridors.FindIndex(edge => rooms[edge.Item1] == RoomType.Boss || rooms[edge.Item2] == RoomType.Boss);
             
             if (bossEdgeIndex != -1)
@@ -136,7 +136,7 @@ namespace TinyDungeon
                 if(connectionCounts.ContainsKey(edge.Item2)) connectionCounts[edge.Item2]++;
             }
 
-            // find non boss room that only have 1 connection
+            // find non Boss Room that only have 1 connection
             foreach (var kvp in connectionCounts)
             {
                 if (kvp.Value == 1 && rooms[kvp.Key] == RoomType.Normal)
@@ -164,21 +164,16 @@ namespace TinyDungeon
 
         private void LootLayer()
         {
-            // get all normal rooms
             var normalRooms = rooms.Where(r => r.Value == RoomType.Normal).Select(r => r.Key).ToList();
-            
-            // determine how many loot rooms to spawn
-            int lootCount = Mathf.Max(2, normalRooms.Count / 5);
 
-            for (int i = 0; i < lootCount; i++)
+            // ensure we don't try to spawn more loot than we have rooms
+            int countToSpawn = Mathf.Min(lootRoomCount, normalRooms.Count);
+
+            for (int i = 0; i < countToSpawn; i++)
             {
                 if (normalRooms.Count == 0) break;
-
                 int index = Random.Range(0, normalRooms.Count);
-                Vector2Int pos = normalRooms[index];
-                
-                rooms[pos] = RoomType.Treasure;
-                
+                rooms[normalRooms[index]] = RoomType.Loot;
                 normalRooms.RemoveAt(index);
             }
         }
@@ -205,7 +200,7 @@ namespace TinyDungeon
                         if (kvp.Value == RoomType.Start) renderer.material.color = Color.green;
                         else if (kvp.Value == RoomType.Boss) renderer.material.color = Color.red;
                         else if (kvp.Value == RoomType.Key) renderer.material.color = Color.cyan;
-                        else if (kvp.Value == RoomType.Treasure) renderer.material.color = Color.yellow;
+                        else if (kvp.Value == RoomType.Loot) renderer.material.color = Color.yellow;
                         else renderer.material.color = Color.gray;
                     }
                     // ensure rooms sit ON TOP of lines

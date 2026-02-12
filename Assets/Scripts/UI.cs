@@ -12,11 +12,13 @@ public class DungeonUI : MonoBehaviour
     public Button generateButton;
     public Slider roomSlider;
     public Slider branchingSlider;
+    public Slider lootSlider;
     public Toggle metroidvaniaToggle;
 
     [Header("Value Labels")]
     public TextMeshProUGUI roomValueText;  
-    public TextMeshProUGUI branchingValueText; 
+    public TextMeshProUGUI branchingValueText;
+    public TextMeshProUGUI lootValueText; 
 
     void Start()
     {
@@ -24,12 +26,14 @@ public class DungeonUI : MonoBehaviour
         {
             roomSlider.value = generator.maxRooms;
             branchingSlider.value = generator.branchingFactor;
+            lootSlider.value = generator.lootRoomCount;
             metroidvaniaToggle.isOn = generator.useMetroidvaniaLogic;
         }
 
         generateButton.onClick.AddListener(OnGenerateClicked);
         roomSlider.onValueChanged.AddListener(OnSettingsChanged);
         branchingSlider.onValueChanged.AddListener(OnSettingsChanged);
+        lootSlider.onValueChanged.AddListener(OnSettingsChanged);
         metroidvaniaToggle.onValueChanged.AddListener(OnToggleChanged);
 
         UpdateLabels();
@@ -39,6 +43,7 @@ public class DungeonUI : MonoBehaviour
     {
         generator.maxRooms = Mathf.RoundToInt(roomSlider.value);
         generator.branchingFactor = branchingSlider.value;
+        generator.lootRoomCount = Mathf.RoundToInt(lootSlider.value);
         
         UpdateLabels();
     }
@@ -53,12 +58,10 @@ public class DungeonUI : MonoBehaviour
         generator.GenerateDungeon();
     }
 
-    void UpdateLabels()
+void UpdateLabels()
     {
-        if (roomValueText != null) 
-            roomValueText.text = generator.maxRooms.ToString();
-        
-        if (branchingValueText != null) 
-            branchingValueText.text = generator.branchingFactor.ToString("F2");
+        if (roomValueText != null) roomValueText.text = generator.maxRooms.ToString();
+        if (branchingValueText != null) branchingValueText.text = generator.branchingFactor.ToString("F2");
+        if (lootValueText != null) lootValueText.text = generator.lootRoomCount.ToString(); 
     }
 }
