@@ -215,7 +215,7 @@ namespace TinyDungeon
                 // draw normal corridors
                 foreach (var edge in corridors)
                 {
-                    SpawnLine(edge.Item1, edge.Item2, Color.black, spacing);
+                    SpawnLine(edge.Item1, edge.Item2, Color.white, spacing);
                 }
 
                 // draw locked doors (red)
