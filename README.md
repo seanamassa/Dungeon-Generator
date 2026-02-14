@@ -3,6 +3,9 @@
 A procedural level design tool built in Unity that generates grid-based dungeon layouts in real-time. This tool features a "Metroidvania" logic layer that intelligently places keys and locks to create backtracking gameplay loops, rather than just random linear paths.
 
 ## Features
+![VideoProject1-ezgif com-crop](https://github.com/user-attachments/assets/1e9c241f-908f-4136-9f89-cdfb2d2e6ba5)
+![demo2](https://github.com/user-attachments/assets/a4f2604f-882e-4b0b-9209-054dc76bde89)
+
 
 * **Runtime Generation:** Instantly generate new layouts directly in the Game View without restarting.
 * **Metroidvania Logic:** A toggleable mode that locks the Boss Room and hides a Key in a distant "dead-end" room, forcing player exploration.
@@ -12,6 +15,7 @@ A procedural level design tool built in Unity that generates grid-based dungeon 
     * **Loot Density:** Control the risk/reward balance by adjusting the number of Treasure rooms.
 * **Auto-Fit Camera:** The camera automatically zooms and centers to keep the entire dungeon in frame, regardless of size.
 * **Visual Debugging:** Color-coded rooms and connections for quick analysis of level flow.
+
 
 ##  Getting Started
 
@@ -26,6 +30,8 @@ A procedural level design tool built in Unity that generates grid-based dungeon 
     * Open the scene located in `Scenes/SampleScene`.
     * Press the **Play** button.
     * Use the UI panel on the left to configure your dungeon and click **"Generate"**.
+    * To save an image directly to the project folder press **"Save Image"**.
+    * A new folder will be created within the Builds folder called **"Dungeon Screenshots"**.
 
 ## Controls & Legend
 
